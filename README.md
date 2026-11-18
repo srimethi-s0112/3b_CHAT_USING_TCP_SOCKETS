@@ -8,7 +8,90 @@ To write a python program for creating Chat using TCP Sockets Links.
  server
 4. Send and receive the message using the send function in socket.
 ## PROGRAM
+## SERVER
+```
+
+import socket
+
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+host = '127.0.0.1'
+port = 5000
+
+server_socket.bind((host, port))
+server_socket.listen(1)
+
+print("Waiting for client connection...")
+
+client_socket, addr = server_socket.accept()
+print("Connected to:", addr)
+
+while True:
+    client_message = client_socket.recv(1024).decode()
+
+    if not client_message:
+        break
+
+    print("Client:", client_message)
+
+    if client_message.lower() == "bye":
+        break
+
+    message = input("Server: ")
+    client_socket.send(message.encode())
+
+    if message.lower() == "bye":
+        break
+
+client_socket.close()
+server_socket.close()
+
+```
+## CLIENT
+```
+
+import socket
+
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+host = '127.0.0.1'
+port = 5000
+
+client_socket.connect((host, port))
+
+print("Connected to server")
+
+while True:
+    message = input("Client: ")
+    client_socket.send(message.encode())
+
+    if message.lower() == "bye":
+        break
+
+    server_message = client_socket.recv(1024).decode()
+
+    if not server_message:
+        break
+
+    print("Server:", server_message)
+
+    if server_message.lower() == "bye":
+        break
+
+client_socket.close()
+
+```
 ## OUPUT
+## SERVER
+
+<img width="542" height="215" alt="image" src="https://github.com/user-attachments/assets/eea54018-f2f2-4e2d-8c3a-6695157e7d03" />
+
+
+## CLIENT
+
+<img width="676" height="272" alt="image" src="https://github.com/user-attachments/assets/17e32832-4708-4a21-8ecc-3760689f2ab5" />
+
+
 ## RESULT
 Thus, the python program for creating Chat using TCP Sockets Links was successfully 
 created and executed.
